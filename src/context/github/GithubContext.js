@@ -19,15 +19,15 @@ export const GithubProvider = ({ children }) => {
     setLoading();
 
     const params = new URLSearchParams({
-      q: text
-    })
+      q: text,
+    });
     const res = await fetch(`${GITHUB_URL}/search/users?${params}`, {
       headers: {
         Authorization: `token ${GITHUB_TOKEN}`,
       },
     });
 
-    const {items} = await res.json();
+    const { items } = await res.json();
 
     dispatch({
       type: "GET_USERS",
@@ -35,12 +35,20 @@ export const GithubProvider = ({ children }) => {
     });
   };
 
+  // clear users from state
+  const clearUsers = () => dispatch({ type: "CLEAR_USERS" });
+
   // set loading
   const setLoading = () => dispatch({ type: "SET_LOADING" });
 
   return (
     <GithubContext.Provider
-      value={{ users: state.users, loading: state.loading, searchUsers }}
+      value={{
+        users: state.users,
+        loading: state.loading,
+        searchUsers,
+        clearUsers,
+      }}
     >
       {children}
     </GithubContext.Provider>
